@@ -1,106 +1,84 @@
-class Morse
-{
-  public:
-    Morse(int pin);
-    void dot();
-    void dash();
-    void c_space();
-    void w_space();
-  private:
-    int _pin;
-    int _dottime;
-};
-
-Morse::Morse(int pin)
-{
-  pinMode(pin,OUTPUT);
-  _pin=pin;
-  _dottime=250;
-}
-
-void Morse::dot()
-{
-  digitalWrite(_pin,HIGH);
-  delay(_dottime);
-  digitalWrite(_pin,LOW);
-  delay(_dottime);
-}
-
-void Morse::dash()
-{
-  digitalWrite(_pin,HIGH);
-  delay(_dottime*4);
-  digitalWrite(_pin,LOW);
-  delay(_dottime);
-}
-
-void Morse::c_space()
-{
-  digitalWrite(_pin,LOW);
-  delay(_dottime*3);
-}
-
-void Morse::w_space()
-{
-  digitalWrite(_pin,LOW);
-  delay(_dottime*7);
-}
-
-Morse morse(13);
-int incomingByte = 0;
-
+int incomingByte = 1000;
+/////////////////////////////////////////////////////////////
 void setup()
 {
-  
+    pinMode(13, OUTPUT);
+  Serial.begin(9600);
+    Serial.print("The Morse of sentence: ");
 }
-
+////////////////////////////////////////////////////////////////
 void loop()
 {
-  char inByte;
-  if (Serial.available()) {
-    char inByte = Serial.read();
-  }
-  
-  switch(inByte)
+  int i;
+  int len=0;
+  if (Serial.available() > 0)
   {
-      case 'a':  morse.dot(); morse.dash(); break;
-      case 'b':  morse.dash(); morse.dot(); morse.dot(); morse.dot(); break;
-      case 'c':  morse.dash(); morse.dot(); morse.dash(); morse.dot(); break;      
-      case 'd':  morse.dash(); morse.dot(); morse.dot();break; 
-      case 'e':  morse.dot(); break;
-      case 'f':  morse.dot(); morse.dot(); morse.dash(); morse.dot(); break;
-      case 'g':  morse.dash(); morse.dash(); break;
-      case 'h':  morse.dot(); morse.dot(); morse.dot(); morse.dot(); break;
-      case 'i':  morse.dot(); morse.dot(); break;
-      case 'j':  morse.dot(); morse.dash(); morse.dash(); morse.dash(); break;
-      case 'k':  morse.dash(); morse.dot(); morse.dash(); break;
-      case 'l':  morse.dot(); morse.dash(); morse.dot(); morse.dot();  break;
-      case 'm':  morse.dash(); morse.dash(); break;
-      case 'n':  morse.dash(); morse.dot(); break;
-      case 'o':  morse.dash(); morse.dash(); morse.dash(); break;
-      case 'p':  morse.dot(); morse.dash(); morse.dash(); morse.dot(); break;
-      case 'q':  morse.dash(); morse.dash(); morse.dot(); morse.dash(); break;
-      case 'r':  morse.dot(); morse.dash(); morse.dot(); break;
-      case 's':  morse.dot(); morse.dot(); morse.dot(); break;
-      case 't':  morse.dash(); break;
-      case 'u':  morse.dot(); morse.dot(); morse.dash(); break;
-      case 'v':  morse.dot(); morse.dot(); morse.dot(); morse.dash(); break;
-      case 'w':  morse.dot(); morse.dash(); morse.dash(); break;
-      case 'x':  morse.dash(); morse.dot(); morse.dot(); morse.dash(); break;
-      case 'y':  morse.dash(); morse.dot(); morse.dash(); morse.dash(); break;
-      case 'z':  morse.dash(); morse.dash(); morse.dot(); morse.dot(); break;
-      case '0':  morse.dash(); morse.dash(); morse.dash(); morse.dash(); morse.dash(); break;
-      case '1':  morse.dot(); morse.dash(); morse.dash(); morse.dash(); morse.dash(); break;
-      case '2':  morse.dot(); morse.dot(); morse.dash(); morse.dash(); morse.dash(); break;
-      case '3':  morse.dot(); morse.dot(); morse.dot(); morse.dash(); morse.dash(); break;
-      case '4':  morse.dot(); morse.dot(); morse.dot(); morse.dot(); morse.dash(); break;
-      case '5':  morse.dot(); morse.dot(); morse.dot(); morse.dot(); morse.dot(); break;
-      case '6':  morse.dash(); morse.dot(); morse.dot(); morse.dot(); morse.dot(); break;
-      case '7':  morse.dash(); morse.dash(); morse.dot(); morse.dot(); morse.dot(); break;
-      case '8':  morse.dash(); morse.dash(); morse.dash(); morse.dot(); morse.dot(); break;
-      case '9':  morse.dash(); morse.dash(); morse.dash(); morse.dash(); morse.dot(); break;
-      case ' ':  morse.w_space(); break;
+    incomingByte = Serial.read();
+    Serial.print(char(incomingByte));
+    fun(incomingByte);
   }
-  morse.c_space();
+}
 
+void fun(int x)
+{
+        
+  switch(x)
+  {
+    case 'a': dot(); dash();  break;
+    case 'b': dash(); dot(); dot(); dot();  break;
+    case 'c': dash(); dot(); dash(); dot();  break;
+    case 'd': dash(); dot(); dot();  break;
+    case 'e': dot();  break;
+    case 'f': dot(); dot(); dash(); dot();  break;
+    case 'g': dash(); dash(); dot();  break;
+    case 'h': dot(); dot(); dot(); dot();  break;
+    case 'i': dot(); dot();  break;
+    case 'j': dot(); dash(); dash(); dash();  break;
+    case 'k': dash(); dot(); dash();  break;
+    case 'l': dot(); dash(); dot(); dot();  break;
+    case 'm': dash(); dash();  break;
+    case 'n': dash(); dot();  break;
+    case 'o': dash(); dash(); dash();  break;
+    case 'p': dot(); dash(); dash(); dot();  break;
+    case 'q': dash(); dash(); dot(); dash();  break;
+    case 'r': dot(); dash(); dot();  break;
+    case 's': dot(); dot(); dot();  break;
+    case 't': dash();  break;
+    case 'u': dot(); dot(); dash();  break;
+    case 'v': dot(); dot(); dot(); dash();  break;
+    case 'w': dot(); dash(); dash();  break;
+    case 'x': dash(); dot(); dot(); dash();  break;
+    case 'y': dash(); dot(); dash(); dash(); dash();  break;
+    case 'z': dash(); dash(); dot(); dot();  break;
+    case ' ':w_space();  break;
+    default:  break;
+  }
+}
+
+void dot()
+{
+  digitalWrite(2, HIGH);
+  delay(300);
+  digitalWrite(2, LOW);
+  delay(200);
+}
+
+void dash()
+{
+  digitalWrite(2, HIGH);
+  delay(1000);
+  digitalWrite(2, LOW);
+  delay(200);
+}
+
+void c_space()
+{
+  digitalWrite(2, LOW);
+  delay(200*3);
+}
+
+void w_space()
+{
+  digitalWrite(2, LOW);
+  delay(250*7);
 }
